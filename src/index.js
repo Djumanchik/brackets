@@ -1,41 +1,26 @@
-module.exports = function check(str, bracketsConfig) {
-  const bracketsConfigOpen = ['(', '{', '[','|' , '1', '3', '5', '7', '8'];
-  const bracketsConfigPair = {
-    [')']: '(',
-    ['}']: '{',
-    ['[']: ']',
-    ['|']: '|',
-    ['1']: '2',
-    ['3']: '4',
-    ['5']: '6',
-    ['7']: '7',
-    ['8']: '8',
-  };
+function check(str, bracketsConfig) {
+  const bracketsConfigPair = bracketsConfig.reduce((acc, [open, close]) => { // разбивка входных данных на частный конфиг
+    acc[close] = open;
+    return acc;
+  }, {});
 
-  function isBracketsOk(str) {
-    let stack =[];
-    for (let i = 0; i < str.length; i++) {
-      let currentBracket = str[i];
-      if (bracketsConfigOpen.includes(currentBracket)) {
-        stack.push(currentBracket);
-      } else {
-        if (stack.length === 0) {
-          return false;
-        }
-        let topBracket = stack[stack.length - 1];
-        if (bracketsConfigPair[currentBracket] === topBracket) {
-          stack.pop();
-        } else {
-          return false;
-        }
-      }
+  const stack =[];
+  for (let i = 0; i < str.length; i++) { // счетчик строки для набивки стэка
+    let currentBracket = str[i];
+
+    const topBracket = stack.length && stack[stack.length - 1] || '';
+
+    if (!topBracket) {
+      stack.push(currentBracket); 
+    } else if (bracketsConfigPair[currentBracket] === topBracket) { 
+      stack.pop(); 
+    } else {
+      stack.push(currentBracket);
     }
-    return stack.length === 0;
   }
-  console.log('([{}])-', isBracketsOk('([{}])'));
-  console.log('[(])-', isBracketsOk('[(])'));
-  console.log('[]()-', isBracketsOk('[]()'));
+
+    return !stack.length; // даст true если стэк окажется в итоге пустым
 }
 
+module.exports = check;
 
- 
