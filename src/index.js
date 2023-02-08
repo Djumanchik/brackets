@@ -33,7 +33,9 @@ module.exports = function check(str, bracketsConfig) {
     }
     return stack.length === 0;
   }
-  console.log(isBracketsOk(str));
+  console.log('([{}])-', isBracketsOk('([{}])'));
+  console.log('[(])-', isBracketsOk('[(])'));
+  console.log('[]()-', isBracketsOk('[]()'));
 }
 
 
