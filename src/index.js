@@ -13,7 +13,6 @@ module.exports = function check(str, bracketsConfig) {
   };
 
   function isBracketsOk(str) {
-    str = '([{}])';
     let stack =[];
     for (let i = 0; i < str.length; i++) {
       let currentBracket = str[i];
